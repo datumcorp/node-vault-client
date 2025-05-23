@@ -2,11 +2,17 @@
 
 const path = require('path');
 const fs = require('fs');
-const Bluebird = require('bluebird');
+//const Bluebird = require('bluebird');
 const _ = require('lodash');
 const assignDeep = require('assign-deep');
 
 const errors = require('./errors');
+
+async function PromiseAllProps(obj) {
+    const values = await Promise.all(Object.values(obj));
+    Object.keys(obj).forEach((key, i) => obj[key] = values[i]);
+    return obj;
+}
 
 class VaultNodeConfig {
 
@@ -41,7 +47,9 @@ class VaultNodeConfig {
 
         let promises = _.mapValues(requiredData, (value, path) => this.__vault.read(path));
 
-        return Bluebird.props(promises).then(results => {
+        //return Bluebird.props(promises)
+        return PromiseAllProps(promises)
+            .then(results => {
             requiredData = _.mapValues(requiredData, (value, path) => results[path].getData());
 
             this.__traverse(substitutionMap, (key, val, obj) => {
