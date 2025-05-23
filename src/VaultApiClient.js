@@ -1,6 +1,6 @@
 'use strict';
 
-const rp = require('request-promise');
+//const rp = require('request-promise');
 const urljoin = require('url-join');
 const _ = require('lodash');
 
@@ -38,7 +38,7 @@ class VaultApiClient {
             })
     }
 
-    makeRequest(method, path, data, headers) {
+    /* makeRequest(method, path, data, headers) {
         data = data === undefined ? null : data;
         headers = headers === undefined ? {} : headers;
 
@@ -67,7 +67,7 @@ class VaultApiClient {
                 );
                 return response;
             });
-    }
+    } */
 }
 
 module.exports = VaultApiClient;
