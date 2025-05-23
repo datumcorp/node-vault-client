@@ -20,6 +20,24 @@ class VaultApiClient {
         this._logger = logger;
     }
 
+    makeFetch(method, path, data, headers) {
+        data = data === undefined ? null : data;
+        headers = headers === undefined ? {} : headers;
+        headers['Content-Type'] = 'application/json'
+
+        const fetchOpts = {
+            method,
+            headers
+        } 
+        if (data) fetchOpts.body = JSON.stringify(data)
+        const url = urljoin(this.__config.url, this.__config.apiVersion, path)
+        
+        return fetch(url, fetchOpts)
+            .then((resp) => {
+                return resp?.json() || {}
+            })
+    }
+
     makeRequest(method, path, data, headers) {
         data = data === undefined ? null : data;
         headers = headers === undefined ? {} : headers;
